@@ -1,0 +1,51 @@
+{
+    "name": "mobx",
+    "version": "1.0.0",
+    "description": "mobx react universal",
+    "main": "index.js",
+    "scripts": {
+        "build": "npm run clear &&npm run build:client && npm run build:server",
+        "build:client": "webpack --config webpack/webpack.config.client.js",
+        "build:server": "webpack --config webpack/webpack.config.server.js",
+        "clear": "rimraf dist",
+        "start": "node server/server.js",
+        "dev:client": "cross-env NODE_ENV=development  webpack-dev-server --config build/webpack.config.client.js"
+    },
+    "keywords": [
+        "react",
+        "mobx",
+        "universal",
+        "server-rending"
+    ],
+    "author": "hewei",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.17.1",
+        "express": "^4.16.2",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0"
+    },
+    "devDependencies": {
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-es2015": "^6.24.1",
+        "babel-preset-es2015-loose": "^8.0.0",
+        "babel-preset-react": "^6.24.1",
+        "cross-env": "^5.1.1",
+        "css-loader": "^0.28.7",
+        "csv-loader": "^2.1.1",
+        "es2015": "0.0.0",
+        "file-loader": "^1.1.6",
+        "html-webpack-plugin": "^2.30.1",
+        "memory-fs": "^0.4.1",
+        "react-hot-loader": "^3.1.3",
+        "rimraf": "^2.6.2",
+        "style-loader": "^0.19.1",
+        "webpack": "^3.10.0",
+        "webpack-dev": "^1.1.0",
+        "webpack-dev-middleware": "^2.0.2",
+        "webpack-merge": "^4.1.1",
+        "xml-loader": "^1.2.1"
+    }
+}
