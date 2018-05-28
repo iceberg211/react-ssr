@@ -4,5 +4,5 @@
             "loose": true
         }]
     ],
-    "plugins": []
+    "plugins": ["react-hot-loader/babel"]
 }

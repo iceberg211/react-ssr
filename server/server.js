@@ -10,7 +10,7 @@ const app = express()
 app.use('/public', express.static(path.join(__dirname, '../dist')))
 app.get('*', function (req, res) {
   const appString = ReactSSR.renderToString(serverEnery)
-  res.send(template.replace('<app></app>', appString))
+  res.send(template.replace('<!-- app -->', appString))
 })
 
 app.listen(3000, function () {
