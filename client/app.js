@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './app.jsx'
 import { AppContainer } from 'react-hot-loader'
+import App from './app.jsx'
 
 const root = document.getElementById('root')
-const render = Component => {
+const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
       <Component />
