@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import Routes from '../config/router'
 
 
 export default class App extends Component {
   render() {
     return (
       <Fragment>
-        <Routes />
+        123456，测试是否热更新
       </Fragment>
     )
   }
