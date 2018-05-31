@@ -1,15 +1,20 @@
 const path = require('path')
 
 module.exports = {
+  output: {
+    path: path.join(__dirname, '../dist'),
+    publicPath: '/public/'
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
   module: {
     rules: [
       {
         enforce: 'pre',
-        test: /\.(jsx|js)$/,
-        loader: 'eslint-loader',
-        exclude: [
-          path.resolve(__dirname, '../node_modules')
-        ]
+        test: /\.(js|jsx)$/,
+        use: ['eslint-loader'],
+        exclude: [path.resolve(__dirname, '../node_modules')]
       },
       {
         test: /\.jsx$/,

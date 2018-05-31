@@ -28,7 +28,6 @@ if (isDev) {
     // 可以通过任何方式，最合适
     host: '0.0.0.0',
     port: '8888',
-    contentBase: path.join(__dirname, '../dist'),
     hot: true,
     compress: true,
     overlay: {
