@@ -1,11 +1,11 @@
 
 const express = require('express')
-const ReactSSR = require('react-dom/server')
 const path = require('path')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const favicon = require('serve-favicon')
 const fs = require('fs')
+const serverRender = require('./util/server-render')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -30,14 +30,19 @@ if (isDev) {
   const devStatic = require('./util/dev-static')
   devStatic(app)
 } else {
-  app.use('/public', express.static(path.join(__dirname, '../dist')))
-  const serverEntry = require('../dist/server-entry')
+  const serverEntry = require('../dist/server.entry')
   const template = fs.readFileSync(path.join(__dirname, '../dist/server.ejs'), 'utf8')
-  app.get('*', function (req, res) {
-    const appString = ReactSSR.renderToString(serverEntry)
-    res.send(template.replace('<!-- app -->', appString))
+  app.use('/public', express.static(path.join(__dirname, '../dist')))
+  app.get('*', function (req, res, next) {
+    serverRender(serverEntry, template, req, res).catch(next)
   })
 }
+
+app.use(function (err, req, res, next) {
+  console.log(err)
+  res.status(500).send(err)
+})
+
 app.listen(3000, function () {
   console.log('服务端渲染开启在3000')
 })
