@@ -3,8 +3,12 @@ const webpack = require('webpack')
 const path = require('path')
 const Memoryfs = require('memory-fs')
 const ReactDomServer = require('react-dom/server')
+const ejs = require('ejs')
 // 代理
 const proxy = require('http-proxy-middleware')
+// react异步请求
+const asyncBootstrap = require('react-async-bootstrapper').default
+const serialize = require('serialize-javascript')
 
 /**
  * 大致思路是在node.js的环境种读取webpack的编译代码，这个方式过于hack
@@ -14,17 +18,17 @@ const serverConfig = require('../../webpack/webpack.config.server')
 
 const getTemplate = () => {
   return new Promise((resolve, reject) => {
-    axios.get('http://localhost:8888/public/index.html').then(res => {
+    axios.get('http://localhost:8888/public/server.ejs').then(res => {
       resolve(res.data)
     }).catch(reject)
   })
 }
 
-const mfs = new Memoryfs;
+const mfs = new Memoryfs()
 // 模块的构造函数
 const Module = module.constructor
 
-let serverBundle;
+let serverBundle, createStoreMap
 
 // 设置webpack的读写模式
 const serverCompiler = webpack(serverConfig)
@@ -32,7 +36,7 @@ serverCompiler.outputFileSystem = mfs
 
 //  webpack的watch
 serverCompiler.watch({}, (err, stats) => {
-  if (err) throw err;
+  if (err) throw err
   stats = stats.toJson()
   stats.errors.forEach(err => console.log(err))
   stats.warnings.forEach(warn => console.log(warn))
@@ -46,7 +50,17 @@ serverCompiler.watch({}, (err, stats) => {
   m._compile(bundle, 'server-entry.js')
 
   serverBundle = m.exports.default
+
+  // 拿到客户端中的方法
+  createStoreMap = m.exports.createStoreMap
 })
+
+const getStoreState = (stores) => {
+  return Object.keys(stores).reduce((result, storeName) => {
+    result[storeName] = stores[storeName].toJson()
+    return result
+  }, {})
+}
 
 module.exports = function (app) {
   // 代理请求到webpacdev上
@@ -56,8 +70,26 @@ module.exports = function (app) {
   // 所有的请求都返回静态结果，都在内存中
   app.get('*', function (req, res) {
     getTemplate().then(template => {
-      const content = ReactDomServer.renderToString(serverBundle)
-      res.send(template.replace('<!-- app -->', content))
+      const routerContext = {}
+      const stores = createStoreMap()
+      // client端的入口文件
+      const app = serverBundle(stores, routerContext, req.url)
+      // react 异步数据
+      asyncBootstrap(app).then(() => {
+        if (routerContext.url) {
+          //  如果有302
+          res.status(302).setHeader('Location', routerContext.url)
+          res.end()
+          return
+        }
+        const state = getStoreState(stores)
+        const content = ReactDomServer.renderToString(app)
+        const html = ejs.render(template, {
+          appString: content,
+          initialState: serialize(state)
+        })
+        res.send(html)
+      })
     })
   })
 }

@@ -1,13 +1,46 @@
-import React, { Component } from 'react'
+import React from 'react'
+import {
+  observer,
+  inject,
+} from 'mobx-react'
+import Helmet from 'react-helmet'
+import Button from 'material-ui/Button'
 
-export default class TopList extends Component {
-  // onChange = (e) => {
-  //   this.props.appState.changeName(e.target.value)
-  // }
+
+@inject('appState') @observer
+export default class TopicList extends React.Component {
+  constructor() {
+    super()
+    this.changeName = this.changeName.bind(this)
+  }
+
+  componentDidMount() {
+    // do something here
+  }
+
+  asyncBootstrap() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.props.appState.count = 3
+        resolve(true)
+      })
+    })
+  }
+
+  changeName(event) {
+    this.props.appState.changeName(event.target.value)
+  }
+
   render() {
     return (
       <div>
-        TopList
+        <Helmet>
+          <title>This is topic list</title>
+          <meta name="description" content="This is description" />
+        </Helmet>
+        <Button raised color="primary">This is a button</Button>
+        <input type="text" onChange={this.changeName} />
+        <span>{this.props.appState.msg}</span>
       </div>
     )
   }
