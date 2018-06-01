@@ -9,6 +9,7 @@ const proxy = require('http-proxy-middleware')
 // react异步请求
 const asyncBootstrap = require('react-async-bootstrapper').default
 const serialize = require('serialize-javascript')
+const Helmet = require('react-helmet').default
 
 const NativeModule = require('module')
 const vm = require('vm')
@@ -98,10 +99,15 @@ module.exports = function (app) {
           return
         }
         const state = getStoreState(stores)
+        const helmet = Helmet.rewind()
         const content = ReactDomServer.renderToString(app)
         const html = ejs.render(template, {
           appString: content,
-          initialState: serialize(state)
+          initialState: serialize(state),
+          meta: helmet.meta.toString(),
+          title: helmet.meta.toString(),
+          link: helmet.meta.toString(),
+          style: helmet.meta.toString()
         })
         res.send(html)
       })

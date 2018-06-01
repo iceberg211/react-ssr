@@ -35,7 +35,7 @@ export default class TopicList extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>This is topic list</title>
+          <title>列表页面</title>
           <meta name="description" content="This is description" />
         </Helmet>
         <Button raised color="primary">This is a button</Button>
