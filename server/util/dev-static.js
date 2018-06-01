@@ -10,6 +10,8 @@ const proxy = require('http-proxy-middleware')
 const asyncBootstrap = require('react-async-bootstrapper').default
 const serialize = require('serialize-javascript')
 
+const NativeModule = require('module')
+const vm = require('vm')
 /**
  * 大致思路是在node.js的环境种读取webpack的编译代码，这个方式过于hack
  * 可以参考社区里的实现
@@ -24,9 +26,21 @@ const getTemplate = () => {
   })
 }
 
+const getModuleFromString = (bundle, filename) => {
+  const m = { exports: {} }
+  const wrapper = NativeModule.wrap(bundle)
+  const script = new vm.Script(wrapper, {
+    filename: filename,
+    displayErrors: true
+  })
+  const result = script.runInThisContext()
+  result.call(m.exports, m.exports, require, m)
+  return m
+}
+
 const mfs = new Memoryfs()
 // 模块的构造函数
-const Module = module.constructor
+// const Module = module.constructor
 
 let serverBundle, createStoreMap
 
@@ -44,13 +58,14 @@ serverCompiler.watch({}, (err, stats) => {
   const bundlePath = path.join(serverConfig.output.path, serverConfig.output.filename)
   // 使用fs读取内存种的代码
   const bundle = mfs.readFileSync(bundlePath, 'utf-8')
-  const m = new Module()
 
-  // 必须指定名字，不然报错,及其hack的写法！
-  m._compile(bundle, 'server-entry.js')
+  // const m = new Module()
+
+  // // 必须指定名字，不然报错,及其hack的写法！
+  // m._compile(bundle, 'server-entry.js')
+  const m = getModuleFromString(bundle, 'server-entry.js')
 
   serverBundle = m.exports.default
-
   // 拿到客户端中的方法
   createStoreMap = m.exports.createStoreMap
 })
