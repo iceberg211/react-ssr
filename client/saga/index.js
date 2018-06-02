@@ -2,7 +2,7 @@ import createSagaMiddleware from 'redux-saga';
 import { put, takeLatest } from 'redux-saga/effects';
 import actions from '../actions';
 
-// create the saga middleware
+
 export const sagaMiddleware = createSagaMiddleware();
 
 function* greet() {

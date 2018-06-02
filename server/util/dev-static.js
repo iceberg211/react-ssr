@@ -8,6 +8,9 @@ const vm = require('vm')
 const serverRendr = require('./server-render')
 const serverConfig = require('../../webpack/webpack.config.server')
 
+const mfs = new Memoryfs()
+let serverBundle
+
 /**
  * 大致思路是在node.js的环境种读取webpack的编译代码，这个方式过于hack
  * 可以参考社区里的实现
@@ -33,11 +36,8 @@ const getModuleFromString = (bundle, filename) => {
   return m
 }
 
-const mfs = new Memoryfs()
 // 模块的构造函数
 // const Module = module.constructor
-
-let serverBundle
 
 // 设置webpack的读写模式
 const serverCompiler = webpack(serverConfig)
