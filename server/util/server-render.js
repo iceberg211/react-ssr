@@ -13,7 +13,6 @@ const getStoreState = (stores) => {
 
 module.exports = (bundel, template, req, res) => {
   return new Promise((resolve, reject) => {
-    console.log(bundel)
     const createStoreMap = bundel.createStoreMap
     const createApp = bundel.default
     const routerContext = {}

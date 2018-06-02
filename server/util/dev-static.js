@@ -67,6 +67,9 @@ module.exports = function (app) {
   }))
   // 所有的请求都返回静态结果，都在内存中
   app.get('*', function (req, res, next) {
+    if (!serverBundle) {
+      return res.send('正在拼命加载中')
+    }
     getTemplate().then(template => {
       return serverRendr(serverBundle, template, req, res)
     }).catch(next)
