@@ -1,13 +1,17 @@
-import AppStateClass from './app-state'
+import { createStore } from 'redux';
+// import { sagaMiddleware } from '../saga';
+import rootReducer from '../reducers';
 
-export const AppState = AppStateClass
+export default function configureStore(initialState) {
+  // https://github.com/zalmoxisus/redux-devtools-extension
 
-export default {
-  AppState,
-}
-
-export const createStoreMap = () => {
-  return {
-    appState: new AppState(),
+  if (initialState) {
+    return createStore(
+      rootReducer,
+      initialState,
+    );
   }
+  return createStore(
+    rootReducer,
+  );
 }

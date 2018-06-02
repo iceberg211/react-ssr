@@ -2,19 +2,20 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'mobx-react'
+import { Provider } from 'react-redux';
+import configureStore from './store/store'
 import App from './views/app'
-import AppState from './store/app-state'
-
+// import { run } from './saga';
 
 const initialState = window.__INITIAL__STATE__ || {} // eslint-disable-line
 
-console.log(initialState)
+const store = configureStore(initialState);
 const root = document.getElementById('root')
 const render = (Component) => {
-  ReactDOM.hydrate(
+  // run()
+  ReactDOM.render(
     <AppContainer>
-      <Provider appState={new AppState(initialState.appState)}>
+      <Provider store={store}>
         <BrowserRouter>
           <Component />
         </BrowserRouter>

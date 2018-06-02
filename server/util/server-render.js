@@ -4,21 +4,14 @@ const asyncBootstrap = require('react-async-bootstrapper').default
 const serialize = require('serialize-javascript')
 const Helmet = require('react-helmet').default
 
-const getStoreState = (stores) => {
-  return Object.keys(stores).reduce((result, storeName) => {
-    result[storeName] = stores[storeName].toJson()
-    return result
-  }, {})
-}
-
 module.exports = (bundel, template, req, res) => {
   return new Promise((resolve, reject) => {
-    const createStoreMap = bundel.createStoreMap
+    const configureStore = bundel.configureStore
     const createApp = bundel.default
     const routerContext = {}
-    const stores = createStoreMap()
-    // client端的入口文件
-    const app = createApp(stores, routerContext, req.url)
+    const store = configureStore()
+
+    const app = createApp(store, routerContext, req.url)
     // react 异步数据
     asyncBootstrap(app).then(() => {
       if (routerContext.url) {
@@ -27,7 +20,7 @@ module.exports = (bundel, template, req, res) => {
         res.end()
         return
       }
-      const state = getStoreState(stores)
+      const state = store.getState()
       const helmet = Helmet.rewind()
       const content = ReactDomServer.renderToString(app)
       const html = ejs.render(template, {
