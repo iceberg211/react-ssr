@@ -5,8 +5,19 @@ import {
 } from 'mobx-react'
 import Helmet from 'react-helmet'
 import Button from 'material-ui/Button'
+import { withStyles } from 'material-ui/styles';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
 
 
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+};
+
+@withStyles(styles)
 @inject('appState') @observer
 export default class TopicList extends React.Component {
   constructor() {
@@ -32,15 +43,30 @@ export default class TopicList extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
         <Helmet>
           <title>列表页面</title>
           <meta name="description" content="This is description" />
         </Helmet>
-        <Button raised color="primary">This is a button</Button>
-        <input type="text" onChange={this.changeName} />
-        <span>{this.props.appState.msg}</span>
+        <div className={classes.root}>
+          <AppBar position="static" color="default">
+            <Toolbar>
+              <Typography variant="title" color="inherit">
+                <Button variant="fab" color="primary" aria-label="add">
+                  加入
+                </Button>
+                <Button variant="fab" color="secondary" aria-label="edit">
+                  加入
+                </Button>
+                <Button variant="fab" disabled aria-label="delete">
+                  加入
+                </Button>
+              </Typography>
+            </Toolbar>
+          </AppBar>
+        </div>
       </div>
     )
   }
