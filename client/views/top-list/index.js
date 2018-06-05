@@ -6,6 +6,7 @@ import {
 import Helmet from 'react-helmet'
 import Button from 'material-ui/Button'
 import { withStyles } from 'material-ui/styles';
+import axios from 'axios'
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -28,7 +29,33 @@ export default class TopicList extends React.Component {
   componentDidMount() {
     // do something here
   }
+  getTopics = () => {
+    axios.get('/api/topics')
+      .then((resp) => {
+        console.log(resp)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
 
+  login = () => {
+    axios.post('/api/user/login', {
+      accessToken: '8cc7a5c2-74cb-4ca3-82bf-3a7a0480e6f8',
+    }).then((resp) => {
+      console.log(resp)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+
+  markAll = () => {
+    axios.post('/api/message/mark_all?needAccessToken=true')
+      .then((resp) => {
+        console.log(resp)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
   asyncBootstrap() {
     return new Promise((resolve) => {
       setTimeout(() => {
@@ -54,15 +81,11 @@ export default class TopicList extends React.Component {
           <AppBar position="static" color="default">
             <Toolbar>
               <Typography variant="title" color="inherit">
-                <Button variant="fab" color="primary" aria-label="add">
-                  加入
+                <Button variant="contained" color="primary" onClick={this.getTopics}>
+                  测试话题页
                 </Button>
-                <Button variant="fab" color="secondary" aria-label="edit">
-                  加入
-                </Button>
-                <Button variant="fab" disabled aria-label="delete">
-                  加入
-                </Button>
+                <Button variant="contained" color="secondary" onClick={this.login}> 登陆</Button>
+                <Button variant="contained" color="secondary" onClick={this.markAll}> 测试话题页</Button>
               </Typography>
             </Toolbar>
           </AppBar>
