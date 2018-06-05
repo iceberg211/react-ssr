@@ -4,6 +4,13 @@ const asyncBootstrap = require('react-async-bootstrapper').default
 const serialize = require('serialize-javascript')
 const Helmet = require('react-helmet').default
 
+// 组件库服务端渲染
+const SheetsRegistry = require('react-jss').SheetsRegistry
+const colors = require('material-ui/colors')
+const createMuiTheme = require('material-ui/styles').createMuiTheme
+const create = require('jss').create
+const preset = require('jss-preset-default').default
+
 const getStoreState = (stores) => {
   return Object.keys(stores).reduce((result, storeName) => {
     result[storeName] = stores[storeName].toJson()
@@ -18,7 +25,19 @@ module.exports = (bundel, template, req, res) => {
     const routerContext = {}
     const stores = createStoreMap()
     // client端的入口文件
-    const app = createApp(stores, routerContext, req.url)
+
+    const theme = createMuiTheme({
+      palette: {
+        primary: colors.pink,
+        accent: colors.lightBlue,
+        type: 'light'
+      }
+    })
+
+    const sheetsRegistry = new SheetsRegistry()
+    const jss = create(preset())
+
+    const app = createApp(stores, routerContext, sheetsRegistry, jss, theme, req.url)
     // react 异步数据
     asyncBootstrap(app).then(() => {
       if (routerContext.url) {
@@ -36,7 +55,8 @@ module.exports = (bundel, template, req, res) => {
         meta: helmet.meta.toString(),
         title: helmet.meta.toString(),
         link: helmet.meta.toString(),
-        style: helmet.meta.toString()
+        style: helmet.meta.toString(),
+        materialCss: sheetsRegistry.toString()
       })
       res.send(html)
       resolve()
