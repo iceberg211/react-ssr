@@ -8,7 +8,7 @@ import { MuiThemeProvider } from 'material-ui/styles'
 import createGenerateClassName from 'material-ui/styles/createGenerateClassName'
 
 import App from './views/app'
-import { createStoreMap } from './store/store'
+import { createStoreMap } from './store'
 
 // 因为mobx有多个sotre
 useStaticRendering(true)

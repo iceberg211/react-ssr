@@ -1,8 +1,13 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import Routes from '../config/router'
+import React, { Component, Fragment } from 'react'
+import {
+  withRouter,
+} from 'react-router-dom'
 
-export default class App extends Component {
+import Routes from '../config/router'
+import AppBar from './components/app-bar'
+// import Container from './components/container'
+
+class App extends Component {
   componentDidMount() {
     const jssStyles = document.getElementById('jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
@@ -12,15 +17,13 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <ul>
-          <li><Link to="/">首页</Link></li>
-          <li><Link to="/topDetail">主题列表</Link></li>
-        </ul>
-
-        <header>标题</header>
+      <Fragment>
+        <AppBar location={this.props.location} />
         <Routes />
-      </div>
+      </Fragment>
     )
   }
 }
+
+
+export default withRouter(App)
