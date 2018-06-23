@@ -11,7 +11,6 @@ export default class TopicList extends React.Component {
   asyncBootstrap() {
     return new Promise((resolve) => {
       setTimeout(() => {
-        console.log(3)
         resolve(true)
       })
     })
