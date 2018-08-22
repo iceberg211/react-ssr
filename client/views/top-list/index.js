@@ -4,11 +4,9 @@ import {
   inject,
 } from 'mobx-react'
 import Helmet from 'react-helmet'
-import Button from 'material-ui/Button'
+
 import { withStyles } from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
 
 
 const styles = {
@@ -18,7 +16,13 @@ const styles = {
 };
 
 @withStyles(styles)
-@inject('appState') @observer
+@inject(stores => {
+  return {
+    appState: stores.appState,
+    topicStore: stores.topicStore,
+  }
+})
+@observer
 export default class TopicList extends React.Component {
   constructor() {
     super()
@@ -26,7 +30,7 @@ export default class TopicList extends React.Component {
   }
 
   componentDidMount() {
-    // do something here
+    this.props.topicStore.fetchTopics();
   }
 
   // 先执行，然后再渲染，做数据的初始化工作
@@ -53,19 +57,7 @@ export default class TopicList extends React.Component {
         </Helmet>
         <div className={classes.root}>
           <AppBar position="static" color="default">
-            <Toolbar>
-              <Typography variant="title" color="inherit">
-                <Button variant="fab" color="primary" aria-label="add">
-                  加入
-                </Button>
-                <Button variant="fab" color="secondary" aria-label="edit">
-                  加入
-                </Button>
-                <Button variant="fab" disabled aria-label="delete">
-                  加入
-                </Button>
-              </Typography>
-            </Toolbar>
+            1
           </AppBar>
         </div>
       </div>

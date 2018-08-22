@@ -30,6 +30,6 @@ export const post = (url, data) => {
 }
 
 export default {
-  get,
+  get, post,
 }
 
