@@ -15,5 +15,6 @@ module.exports = webpackMerge(baseConfig, {
     // 使用最新的node.js模块方案，适用于
     libraryTarget: 'commonjs2'
   },
+  // 过滤掉一些多余的类库代码，这些方法类库直接可以在node.js中引用
   externals: Object.keys(require('../package.json').dependencies)
 })

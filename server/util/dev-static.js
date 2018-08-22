@@ -20,7 +20,11 @@ const getTemplate = () => {
     }).catch(reject)
   })
 }
-
+/*
+** 解决requir无法从node.js模块中引入包的问题
+** 将JavaScript代码包裹成node.js的模块
+** `function(exports,require,module,__filename,__direname){...bundle code}`
+**/
 const getModuleFromString = (bundle, filename) => {
   const m = { exports: {} }
   const wrapper = NativeModule.wrap(bundle)

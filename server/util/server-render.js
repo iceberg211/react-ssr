@@ -1,8 +1,9 @@
 const ReactDomServer = require('react-dom/server')
 const ejs = require('ejs')
-const asyncBootstrap = require('react-async-bootstrapper').default
 const serialize = require('serialize-javascript')
 const Helmet = require('react-helmet').default
+// 使用import开发的包，所以需要使用defalut来引入,异步渲染的方法
+const asyncBootstrap = require('react-async-bootstrapper').default
 
 // 组件库服务端渲染
 const SheetsRegistry = require('react-jss').SheetsRegistry
@@ -11,6 +12,9 @@ const createMuiTheme = require('material-ui/styles').createMuiTheme
 const create = require('jss').create
 const preset = require('jss-preset-default').default
 
+/*
+ *  计算store，然后插入到html中
+ */
 const getStoreState = (stores) => {
   return Object.keys(stores).reduce((result, storeName) => {
     result[storeName] = stores[storeName].toJson()
@@ -38,7 +42,7 @@ module.exports = (bundel, template, req, res) => {
     const jss = create(preset())
 
     const app = createApp(stores, routerContext, sheetsRegistry, jss, theme, req.url)
-    // react 异步数据
+    // react 异步数据，提供了
     asyncBootstrap(app).then(() => {
       if (routerContext.url) {
         //  如果有302

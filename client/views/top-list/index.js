@@ -29,6 +29,7 @@ export default class TopicList extends React.Component {
     // do something here
   }
 
+  // 先执行，然后再渲染，做数据的初始化工作
   asyncBootstrap() {
     return new Promise((resolve) => {
       setTimeout(() => {

@@ -17,7 +17,6 @@ export default class App extends Component {
           <li><Link to="/">首页</Link></li>
           <li><Link to="/topDetail">主题列表</Link></li>
         </ul>
-
         <header>标题</header>
         <Routes />
       </div>
