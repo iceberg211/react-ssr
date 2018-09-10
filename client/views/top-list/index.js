@@ -57,7 +57,7 @@ export default class TopicList extends React.Component {
         </Helmet>
         <div className={classes.root}>
           <AppBar position="static" color="default">
-            1
+            {this.props.appState.count}
           </AppBar>
         </div>
       </div>
