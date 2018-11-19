@@ -138,14 +138,13 @@ class TopicList extends React.Component {
   }
 
   render() {
-    const topics = this.props.topicStore.topics
+    // console.log(this.props,)
     const createdTopics = this.props.topicStore.createdTopics
     const syncing = this.props.topicStore.syncing
     const user = this.props.user
     const query = queryString.parse(this.props.location.search)
     const tab = query.tab
     const tabValue = tab || 'all'
-    console.log(this.props, this.props.topicStore.topics)
     return (
       <Container>
         <Helmet>
@@ -193,20 +192,17 @@ class TopicList extends React.Component {
         }
         <List>
           {
-            topics.map(topic => {
-              // topic = topic.content
-              return (
-                <ListItem button key={topic.id} onClick={() => this.goToTopic(topic)}>
-                  <ListItemAvatar>
-                    <Avatar src={topic.author.avatar_url} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={<StyledTopicPrimary topic={topic} />}
-                    secondary={<StyledTopicSecondary topic={topic} />}
-                  />
-                </ListItem>
-              )
-            })
+            this.props.topicStore.topics.map(topic => (
+              <ListItem button key={topic.id} onClick={() => this.goToTopic(topic)}>
+                <ListItemAvatar>
+                  <Avatar src={topic.author.avatar_url} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={<StyledTopicPrimary topic={topic} />}
+                  secondary={<StyledTopicSecondary topic={topic} />}
+                />
+              </ListItem>
+            ))
           }
         </List>
         {

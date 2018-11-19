@@ -9,7 +9,7 @@ const serverRendr = require('./server-render')
 const serverConfig = require('../../webpack/webpack.config.server')
 
 /**
- * 大致思路是在node.js的环境种读取webpack的编译代码，这个方式过于hack
+ * 大致思路是在node.js的环境中读取webpack的编译代码，这个方式过于hack
  * 可以参考社区里的实现
  */
 

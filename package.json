@@ -14,10 +14,9 @@
         "deploy": "npm run build && npm run upload",
         "lint": "eslint --ext .jsx --ext .js client/",
         "start": "cross-env NODE_ENV=production node server/server.js"
-
     },
-    "author": "Jokcy",
-    "license": "ISC",
+    "author": "hewei",
+    "license": "Mit",
     "dependencies": {
         "axios": "^0.16.2",
         "babel-polyfill": "^6.26.0",

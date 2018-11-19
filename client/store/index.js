@@ -10,7 +10,7 @@ export default {
 
 export const createStoreMap = () => {
   return {
-    appState: new AppState(),
-    topicStore: new TopicStore(),
+    // appState: new AppState(),
+    // topicStore: new TopicStore(),
   }
 }
